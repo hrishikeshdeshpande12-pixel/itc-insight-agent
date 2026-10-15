@@ -16,12 +16,20 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess }) {
     setErrorMsg(null);
     setLoading(true);
 
+    const cleanEmail = (email || '').trim().toLowerCase();
+    const isAdmin = cleanEmail === 'hrishikeshdeshpande23@gmail.com' || cleanEmail === 'hrishikesh@itc.in';
+    if (!cleanEmail.endsWith('@itc.in') && !isAdmin) {
+      setErrorMsg('Access restricted to official ITC personnel. Only corporate @itc.in email addresses are permitted.');
+      setLoading(false);
+      return;
+    }
+
     try {
       let result;
       if (isRegister) {
-        result = await registerApi(email, password, displayName);
+        result = await registerApi(cleanEmail, password, displayName);
       } else {
-        result = await loginApi(email, password);
+        result = await loginApi(cleanEmail, password);
       }
       if (onAuthSuccess) {
         onAuthSuccess(result.user);

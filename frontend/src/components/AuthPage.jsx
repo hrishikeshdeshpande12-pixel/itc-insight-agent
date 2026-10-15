@@ -15,13 +15,21 @@ export default function AuthPage({ onAuthSuccess }) {
     setErrorMsg(null);
     setLoading(true);
 
+    const cleanEmail = (email || '').trim().toLowerCase();
+    const isAdmin = cleanEmail === 'hrishikeshdeshpande23@gmail.com' || cleanEmail === 'hrishikesh@itc.in';
+    if (!cleanEmail.endsWith('@itc.in') && !isAdmin) {
+      setErrorMsg('Access restricted to official ITC personnel. Only corporate @itc.in email addresses are permitted.');
+      setLoading(false);
+      return;
+    }
+
     try {
       let result;
       if (isRegister) {
-        result = await registerApi(email, password, displayName);
+        result = await registerApi(cleanEmail, password, displayName);
         if (result.status === 'pending') {
           setPendingRegistration({
-            email,
+            email: cleanEmail,
             displayName,
             message: result.message || 'Administrator approval is required before you can log in.',
           });
@@ -29,7 +37,7 @@ export default function AuthPage({ onAuthSuccess }) {
           return;
         }
       } else {
-        result = await loginApi(email, password);
+        result = await loginApi(cleanEmail, password);
       }
       if (onAuthSuccess && result.user) {
         onAuthSuccess(result.user);
@@ -185,17 +193,20 @@ export default function AuthPage({ onAuthSuccess }) {
 
               <div className="auth-field-group">
                 <label className="auth-label" htmlFor="page-auth-email">
-                  Corporate / Analyst Email
+                  Official ITC Email (@itc.in)
                 </label>
                 <input
                   id="page-auth-email"
                   type="email"
                   className="auth-input"
-                  placeholder="e.g. analyst@itc.in"
+                  placeholder="e.g. executive@itc.in"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
+                <span style={{ fontSize: '11px', color: '#64748B', marginTop: '4px', display: 'block' }}>
+                  🔒 Official ITC Limited domain access only (@itc.in)
+                </span>
               </div>
 
               <div className="auth-field-group">

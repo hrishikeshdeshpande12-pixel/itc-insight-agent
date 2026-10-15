@@ -36,6 +36,18 @@ class AuthService:
         }
         return clean in admin_emails
 
+    def is_allowed_email(self, email: str) -> bool:
+        """
+        Validates that email belongs to the official @itc.in corporate domain.
+        The configured system administrator email is also permitted.
+        """
+        clean = (email or "").strip().lower()
+        if clean.endswith("@itc.in"):
+            return True
+        if self.is_admin_email(clean):
+            return True
+        return False
+
     def _create_token(self, user_id: str, email: str, display_name: str, role: str = "user") -> str:
         now = datetime.now(timezone.utc)
         exp = now + timedelta(days=JWT_EXPIRATION_DAYS)
@@ -52,12 +64,18 @@ class AuthService:
     def register(self, email: str, password: str, display_name: Optional[str] = None) -> Dict[str, Any]:
         """
         Registers a new user.
+        Enforces that the email belongs to @itc.in domain.
         If user is admin (hrishikeshdeshpande23@gmail.com): auto-approved with role='admin'.
         If other user: created with status='pending', dispatches email alert to admin.
         """
         clean_email = email.strip().lower()
         if not clean_email or "@" not in clean_email:
             raise ValueError("Please provide a valid email address.")
+        if not self.is_allowed_email(clean_email):
+            raise ValueError(
+                "Access restricted to official ITC personnel. "
+                "Only corporate email addresses ending with @itc.in are permitted."
+            )
         if len(password) < 6:
             raise ValueError("Password must be at least 6 characters.")
 
@@ -129,9 +147,15 @@ class AuthService:
     def login(self, email: str, password: str) -> Dict[str, Any]:
         """
         Authenticates user against Firestore credentials.
-        Rejects unapproved or pending users with clear notices.
+        Rejects unapproved, pending, or non-itc.in users with clear notices.
         """
         clean_email = email.strip().lower()
+        if not self.is_allowed_email(clean_email):
+            raise ValueError(
+                "Access restricted to official ITC personnel. "
+                "Only corporate email addresses ending with @itc.in are permitted."
+            )
+
         users_stream = list(self.db.collection("users").where("email", "==", clean_email).limit(1).stream())
         if not users_stream:
             raise ValueError("Invalid email or password.")

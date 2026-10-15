@@ -22,18 +22,16 @@ def test_auth_registration_and_login_flow():
     password = "StrongPassword@123"
     name = f"ITC Analyst {unique_suffix}"
 
-    # 1. Register new user
+    # 1. Register new user (status: pending)
     reg_res = client.post(
         "/api/auth/register",
         json={"email": email, "password": password, "full_name": name}
     )
     assert reg_res.status_code == 200, f"Registration failed: {reg_res.text}"
     reg_data = reg_res.json()
-    assert "token" in reg_data
+    assert reg_data["status"] == "pending"
     assert reg_data["user"]["email"] == email
     assert reg_data["user"]["display_name"] == name
-    assert reg_data["user"]["full_name"] == name
-    token = reg_data["token"]
     user_id = reg_data["user"]["id"]
 
     # 2. Prevent duplicate email
@@ -44,7 +42,19 @@ def test_auth_registration_and_login_flow():
     assert dup_res.status_code == 400
     assert "already exists" in dup_res.json().get("detail", "")
 
-    # 3. Test login with correct password
+    # 3. Login while pending should be rejected
+    pending_login = client.post(
+        "/api/auth/login",
+        json={"email": email, "password": password}
+    )
+    assert pending_login.status_code == 401
+    assert "pending administrator approval" in pending_login.json().get("detail", "")
+
+    # 4. Admin approves user
+    from app.services.auth_service import AuthService
+    AuthService().approve_user(user_id, "hrishikeshdeshpande23@gmail.com")
+
+    # 5. Test login with correct password now that user is approved
     login_res = client.post(
         "/api/auth/login",
         json={"email": email, "password": password}
@@ -53,6 +63,7 @@ def test_auth_registration_and_login_flow():
     login_data = login_res.json()
     assert "token" in login_data
     assert login_data["user"]["id"] == user_id
+    token = login_data["token"]
 
     # 4. Test login with incorrect password
     bad_login = client.post(
@@ -132,4 +143,32 @@ def test_firestore_conversation_persistence():
     # 6. Verify session messages gone
     remaining = firestore_chat_service.get_session_messages(test_user_id, session_id)
     assert len(remaining) == 0
+
+
+def test_domain_restriction_for_non_itc_emails():
+    """Verify that registration and login strictly reject non-@itc.in emails."""
+    # 1. Reject @gmail.com on register
+    res_gmail = client.post(
+        "/api/auth/register",
+        json={"email": "outsider@gmail.com", "password": "Password123!", "full_name": "Outsider"}
+    )
+    assert res_gmail.status_code == 400
+    assert "@itc.in" in res_gmail.json().get("detail", "")
+
+    # 2. Reject @yahoo.com on login
+    res_login_yahoo = client.post(
+        "/api/auth/login",
+        json={"email": "outsider@yahoo.com", "password": "Password123!"}
+    )
+    assert res_login_yahoo.status_code == 401
+    assert "@itc.in" in res_login_yahoo.json().get("detail", "")
+
+    # 3. Reject random domain on register
+    res_random = client.post(
+        "/api/auth/register",
+        json={"email": "attacker@fakecorp.org", "password": "Password123!", "full_name": "Attacker"}
+    )
+    assert res_random.status_code == 400
+    assert "@itc.in" in res_random.json().get("detail", "")
+
 
