@@ -1,0 +1,15 @@
+.gcloudignore
+.git
+.gitignore
+data/
+backend/data/
+**/node_modules/
+**/.pytest_cache/
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.pyd
+.env
+backend/.env
+tests/
+

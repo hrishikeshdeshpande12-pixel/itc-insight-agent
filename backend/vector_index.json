@@ -1,0 +1,10 @@
+[
+  {
+    "field-path": "embedding",
+    "vector-config": {
+      "dimension": 768,
+      "flat": {}
+    }
+  }
+]
+

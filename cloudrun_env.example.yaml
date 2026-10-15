@@ -1,0 +1,19 @@
+# Example Cloud Run Environment Variables (Template)
+# Copy this file to cloudrun_env.yaml and configure your real secrets.
+# NEVER commit cloudrun_env.yaml with real credentials to GitHub.
+
+GOOGLE_CLOUD_PROJECT: "itc-fmcg-agent"
+GOOGLE_CLOUD_LOCATION: "us-east1"
+GOOGLE_GENAI_USE_VERTEXAI: "true"
+GCS_BUCKET: "itc-fmcg-agent-documents"
+GCS_SOURCE_PREFIX: "itc/source-documents/"
+EMBEDDING_MODEL: "gemini-embedding-001"
+EMBEDDING_DIMENSION: "768"
+GENERATION_MODEL: "gemini-2.5-flash"
+FIRESTORE_KNOWLEDGE_COLLECTION: "itc_knowledge"
+ADMIN_EMAIL: "your-admin-email@example.com"
+APP_URL: "https://your-cloud-run-service.run.app"
+SMTP_HOST: "smtp.gmail.com"
+SMTP_PORT: "587"
+SMTP_USER: "your-admin-email@example.com"
+SMTP_PASSWORD: "your-google-app-password"

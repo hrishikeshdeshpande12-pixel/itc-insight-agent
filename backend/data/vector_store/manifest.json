@@ -1,0 +1,15 @@
+{
+  "index_version": "1.0",
+  "embedding_model": "gemini-embedding-001",
+  "embedding_dimension": 768,
+  "chunk_size": 1000,
+  "chunk_overlap": 150,
+  "source_documents": {
+    "cmd-presentation.pdf": "b5def12a323c7af8018d4aba2c774d060f082526982ffa4e8bb5c7ae403b8613",
+    "ITC-R-and-A-2026-Theme-feature.pdf": "9f237c5bed1f109db3bae5231bb8d287dc4941bd0ad712d307a9e58be19f0ae1",
+    "ITC-Report-and-Accounts-2026.pdf": "a7c3a85f3748cebb7b8811d66080568f2fbd6d8f67ebe18335e749f1ed8fdfc1",
+    "itc-sustainability-report-2025.pdf": "1cee571e909dd0429099f3a376015f1c6df5760b41fe833dc2b3a37416e90818"
+  },
+  "chunk_count": 1955,
+  "created_at": "2026-10-08 14:32:20"
+}

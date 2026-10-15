@@ -1,0 +1,146 @@
+:root {
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Space Grotesk', 'Plus Jakarta Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Official ITC Logo Palette: Royal Navy Blue & Luminous Azure */
+  --itc-blue-950: #03152C;
+  --itc-blue-900: #062F62; /* Primary Official Brand Color from Logo */
+  --itc-blue-800: #0A3C7B;
+  --itc-blue-700: #0E4E9E;
+  --itc-blue-600: #1562BF;
+  --itc-blue-500: #257CE0;
+  --itc-blue-400: #3B82F6;
+  --itc-blue-300: #60A5FA;
+  --itc-blue-200: #BFDBFE;
+  --itc-blue-150: #DBEAFE;
+  --itc-blue-100: #EFF6FF;
+  --itc-blue-50:  #F4F8FD;
+
+  /* Luminous Light Blue & White Surfaces (Referenced with ITC Logo) */
+  --bg-app: #F0F6FD; /* Crisp Light Blue & White Canvas */
+  --bg-app-alt: #F8FAFC;
+  --bg-surface: rgba(255, 255, 255, 0.88); /* Frosted pure white glass */
+  --bg-surface-solid: #FFFFFF;
+  --bg-surface-subtle: rgba(239, 246, 255, 0.82); /* Ice blue tint glass */
+  --bg-surface-elevated: #FFFFFF;
+
+  /* Executive Warm Gold Accents (from ITC emblem) */
+  --accent-gold-800: #7A5B14;
+  --accent-gold-600: #B88E2B;
+  --accent-gold-500: #D4AF37;
+  --accent-gold-400: #E6C865;
+  --accent-gold-100: #FEF9EB;
+  --accent-gold-50:  #FFFDF7;
+
+  /* Cyber Sky / Azure Accents */
+  --accent-azure-600: #0369A1;
+  --accent-azure-500: #0284C7;
+  --accent-azure-400: #38BDF8;
+  --accent-azure-200: #BAE6FD;
+  --accent-azure-100: #E0F2FE;
+
+  /* Borders: Ice Blue & Subtle Navy */
+  --border-subtle: rgba(6, 47, 98, 0.08);
+  --border-medium: rgba(37, 124, 224, 0.22);
+  --border-strong: rgba(6, 47, 98, 0.16);
+  --border-glow-blue: rgba(37, 124, 224, 0.35);
+  --border-glow-gold: rgba(212, 175, 55, 0.35);
+
+  /* High-Contrast Crisp Typography */
+  --text-primary: #062F62; /* Primary ITC Royal Navy */
+  --text-heading: #041E42;
+  --text-body: #1E293B;
+  --text-secondary: #334155;
+  --text-muted: #64748B;
+  --text-dim: #94A3B8;
+
+  /* Futuristic Light Glass Shadows with Royal Blue Radiance */
+  --shadow-sm: 0 2px 8px rgba(6, 47, 98, 0.04);
+  --shadow-md: 0 8px 24px rgba(6, 47, 98, 0.07), 0 2px 6px rgba(0, 0, 0, 0.02);
+  --shadow-lg: 0 16px 44px rgba(6, 47, 98, 0.10), 0 4px 12px rgba(37, 124, 224, 0.06);
+  --shadow-glow: 0 0 25px rgba(37, 124, 224, 0.18), 0 8px 24px rgba(6, 47, 98, 0.08);
+  --shadow-glow-azure: 0 0 25px rgba(56, 189, 248, 0.25);
+  --shadow-glow-gold: 0 0 20px rgba(212, 175, 55, 0.18);
+
+  /* Radii */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 26px;
+
+  /* Layout dimensions */
+  --sidebar-width: 275px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-app);
+  background-image: 
+    radial-gradient(circle at 15% 0%, rgba(186, 230, 253, 0.45) 0%, transparent 40%),
+    radial-gradient(circle at 85% 5%, rgba(254, 243, 199, 0.35) 0%, transparent 35%),
+    radial-gradient(circle at 50% 90%, rgba(219, 234, 254, 0.4) 0%, transparent 50%),
+    linear-gradient(to right, rgba(6, 47, 98, 0.025) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(6, 47, 98, 0.025) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+  color: var(--text-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+input, textarea {
+  font-family: inherit;
+  outline: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Futuristic Light Blue Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(240, 246, 253, 0.8);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(37, 124, 224, 0.25);
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(37, 124, 224, 0.5);
+}
+
+/* Selection */
+::selection {
+  background-color: var(--itc-blue-150);
+  color: var(--itc-blue-900);
+}

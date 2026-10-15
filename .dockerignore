@@ -1,0 +1,14 @@
+data/
+backend/data/
+**/node_modules/
+**/.pytest_cache/
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.pyd
+.git/
+.gitignore
+.env
+backend/.env
+cloudrun_env.yaml
+tests/
